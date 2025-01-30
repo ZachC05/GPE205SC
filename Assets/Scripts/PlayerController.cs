@@ -29,19 +29,19 @@ public class PlayerController : Controller
     public override void GetInputs()
     {
         //gets inputs from player and communicates it to the pawn scripts
-        if (Input.GetKeyDown(moveForwardKey))
+        if (Input.GetKey(moveForwardKey))
         {
             pawn.MoveForward();
         }
-        if (Input.GetKeyDown(moveBackwardKey))
+        if (Input.GetKey(moveBackwardKey))
         {
             pawn.MoveBackward();
         }
-        if (Input.GetKeyDown(rotateRightKey))
+        if (Input.GetKey(rotateRightKey))
         {
             pawn.RotateRight();
         }
-        if (Input.GetKeyDown(rotateLeftKey))
+        if (Input.GetKey(rotateLeftKey))
         {
             pawn.RotateLeft();
         }

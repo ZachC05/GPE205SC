@@ -18,18 +18,22 @@ public class TankPawn : Pawn
     }
     public override void MoveForward()
     {
-        Debug.Log("Moving Forward");
+        //Got from other script and allows the forward movement
+        mover.Move(transform.forward, moveSpeed);
     }
     public override void MoveBackward()
     {
-        Debug.Log("Moving Backward");
+        //Got from other script and allows the backward movement
+        mover.Move(transform.forward, -moveSpeed);
     }
     public override void RotateRight()
     {
-        Debug.Log("Rotating Right");
+        //Got from other script and allows the right rotation
+        mover.Rotate(turnSpeed);
     }
     public override void RotateLeft()
     {
-        Debug.Log("Rotating Left");
+        //Got from other script and allows the left rotation
+        mover.Rotate(turnSpeed);
     }
 }
