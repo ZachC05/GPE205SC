@@ -17,5 +17,7 @@ public abstract class Controller : MonoBehaviour
     {
         
     }
+
+    
     public abstract void GetInputs();
 }
