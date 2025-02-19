@@ -5,11 +5,14 @@ using UnityEngine;
 public class GameControl : MonoBehaviour
 {
     //this game instnace
-    GameControl instance;
+    public static GameControl instance;
 
     //what the controller and tanks are
     public GameObject playerPrefab;
     public GameObject tankPawnPrefab;
+
+    //start poit of the tank
+    public List<PlayerController> players;
     // Start is called before the first frame update
     public void Awake()
     {
@@ -24,6 +27,8 @@ public class GameControl : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        players = new List<PlayerController>();
     }
 
     public void Start()
@@ -46,4 +51,6 @@ public class GameControl : MonoBehaviour
         //assigns the controller to the tank the player can control
         playerController.pawn = tankpawn;
     }
+
+
 }

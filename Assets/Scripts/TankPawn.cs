@@ -34,6 +34,6 @@ public class TankPawn : Pawn
     public override void RotateLeft()
     {
         //Got from other script and allows the left rotation
-        mover.Rotate(turnSpeed);
+        mover.Rotate(-turnSpeed);
     }
 }
