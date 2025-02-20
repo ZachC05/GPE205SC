@@ -15,6 +15,18 @@ public abstract class Pawn : MonoBehaviour
     [Header("Gets the Mover")]
     public Mover mover;
 
+    [Header("Gets the Shooter")]
+    public Shooter shooter;
+
+    //Shooter Stats
+    [Header("Shooter Stats")]
+    public GameObject bullet;
+    public float damageApplied;
+    public float bulletForce;
+    public float bulletLifespan;
+
+    //rate of fire
+    public float fireRate;
     // Start is called before the first frame update
     public virtual void Start()
     {
@@ -34,4 +46,8 @@ public abstract class Pawn : MonoBehaviour
     public abstract void RotateRight();
 
     public abstract void RotateLeft();
+
+    public abstract void Shoot();
+
+    public abstract void RotateTowards(Vector3 TargetPos);
 }

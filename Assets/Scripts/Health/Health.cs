@@ -23,7 +23,7 @@ public class Health : MonoBehaviour
     {
         //Takes damage
         currentHealth -= amout;
-        Debug.Log(source.name + " Did" + amout + " damage to " + gameObject.name);
+        Debug.Log(source.name + " Did " + amout + " damage to " + gameObject.name);
 
         //Returns a value and can't go below 0
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);

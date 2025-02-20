@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : Controller
@@ -13,6 +14,8 @@ public class PlayerController : Controller
     public KeyCode rotateRightKey;
     public KeyCode rotateLeftKey;
 
+    [Header("Keys for Shooting || Can left click to shoot")]
+    public KeyCode shootKey;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -54,6 +57,10 @@ public class PlayerController : Controller
         if (Input.GetKey(rotateLeftKey))
         {
             pawn.RotateLeft();
+        }
+        if(Input.GetKey(shootKey) || Input.GetMouseButton(0))
+        {
+            pawn.Shoot();
         }
     }
     public void OnDestroy()

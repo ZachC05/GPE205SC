@@ -20,7 +20,7 @@ public class DamageOnHit : MonoBehaviour
         
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerEnter(Collider other)
     {
         //Get the health component from the gameobject that has been collided with
         Health otherHealth = other.GetComponent<Health>();
