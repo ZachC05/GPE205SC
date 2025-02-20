@@ -174,15 +174,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ff57a074e251e40964149294597b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 20
+  moveSpeed: 5
   turnSpeed: 360
   mover: {fileID: 6283981432051321197}
   shooter: {fileID: 8134665149077440637}
   bullet: {fileID: 6335736673517558600, guid: 694b941a97db09145a063584d822d17e, type: 3}
-  damageApplied: 5
+  damageApplied: 1
   bulletForce: 1000
   bulletLifespan: 3
-  fireRate: 5
+  fireRate: 1
   nextShootTime: 0
 --- !u!114 &6283981432051321197
 MonoBehaviour:

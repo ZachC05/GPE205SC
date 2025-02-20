@@ -41,6 +41,8 @@ public abstract class Pawn : MonoBehaviour
 
     public abstract void MoveForward();
 
+    public abstract void MoveForward(float speed);
+
     public abstract void MoveBackward();
 
     public abstract void RotateRight();

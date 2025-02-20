@@ -18,9 +18,24 @@ public class AIController : Controller
     public float chaseTriggerDistance;
     public float guardTriggerDistance;
     public float attackTriggerDistance;
+    public float fleeDistance;
+
+    [Header("AI Waypoints Stats")]
+    public float waypointStopDistance;
+    public Transform[] waypoints;
+
+    private int currentWaypoint = 0;
+
+    Health health;
+
+    [Header("Spawning a Starting Tank")]
+    public GameObject TankPawn;
     // Start is called before the first frame update
     public override void Start()
     {
+        GameObject newPawn = Instantiate(TankPawn, transform.position, transform.rotation);
+        pawn = newPawn.GetComponent<Pawn>();
+        health = pawn.GetComponent<Health>();
         triggerDistance = guardTriggerDistance;
         base.Start();
     }
@@ -28,7 +43,10 @@ public class AIController : Controller
     // Update is called once per frame
     public override void Update()
     {
-        
+        if (!HasTarget())
+        {
+            TargetPlayerOne();
+        }
 
         GetInputs();
 
@@ -43,16 +61,23 @@ public class AIController : Controller
             case AIState.Guard:
                 //Set to guard state
                 DoGuard();
-                if(IsDistanceLessThan(target, triggerDistance))
+                //Check for any transitions
+                if (IsDistanceLessThan(target, triggerDistance))
                 {
                     ChangeState(AIState.Chase);
                 }
-                //Check for any transitions
+                else if (health.currentHealth < health.maxHealth / 2)
+                {
+                    Debug.Log("Enter Flee State");
+                    ChangeState(AIState.Flee);
+                }
+
                 break;
             case AIState.Chase:
                 //Set to Chase state
                 DoChase();
-                if(!IsDistanceLessThan(target, triggerDistance))
+                //Check for any transitions
+                if (!IsDistanceLessThan(target, triggerDistance))
                 {
                     ChangeState(AIState.Guard);
                 }
@@ -61,21 +86,32 @@ public class AIController : Controller
                     Debug.Log("Enter Attack State");
                     ChangeState(AIState.Attack);
                 }
-                //Check for any transitions
+                else if (health.currentHealth < health.maxHealth / 2 + 1)
+                {
+                    Debug.Log("Enter Flee State");
+                    ChangeState(AIState.Flee);
+                }
+
                 break;
             case AIState.Flee:
                 //Set to Flee state
-                Flee();
+                DoFlee();
                 //Check for any transitions
+                if (health.currentHealth >= health.maxHealth / 2)
+                {
+                    Debug.Log("Exit Flee State");
+                    ChangeState(AIState.Guard);
+                }
                 break;
             case AIState.Patrol:
                 //Set to Patrol state
-                Patrol();
+                DoPatrol();
                 //Check for any transitions
                 break;
             case AIState.Attack:
                 //Set to Attack state
                 DoAttack();
+                //Check for any transitions
                 if (!IsDistanceLessThan(target, attackTriggerDistance))
                 {
                     Debug.Log("Left Attack State");
@@ -118,11 +154,11 @@ public class AIController : Controller
     }
 
 
-    public void Flee()
+    public void DoFlee()
     {
-        //Does Nothing
+        Flee();
     }
-    public void Patrol()
+    public void DoPatrol()
     {
         //Does Nothing
     }
@@ -138,7 +174,7 @@ public class AIController : Controller
 
     //Functions representing the behaviors
 
-    
+    //Seek
     public void Seek(Vector3 target)
     {
         pawn.RotateTowards(target);
@@ -157,6 +193,63 @@ public class AIController : Controller
     {
         Seek(target.transform.position);
     }
+
+    //Flee
+    public void Flee()
+    {
+        /*
+        float targetDistance = Vector3.Distance(target.transform.position, pawn.transform.position);
+
+        float percentOfFleeDistance = targetDistance / fleeDistance;
+
+        percentOfFleeDistance = Mathf.Clamp01(percentOfFleeDistance);
+
+        float flippedPercentOfFleeDistance = 1 - percentOfFleeDistance;
+        */
+        //Find the vector of the target
+        Vector3 vectorToTarget = target.transform.position - pawn.transform.position;
+        //Find the vector away from the target by subtracting the vectorToTarget
+        Vector3 vectorAwayFromTarget = -vectorToTarget;
+        // find the vector we would travel down in ordewr to flee(run away in opposite direction
+        Vector3 fleeVector = vectorAwayFromTarget.normalized * fleeDistance;// * flippedPercentOfFleeDistance;
+        // Seel the ppoint that is "fleeVector" away from our current position
+
+        Seek(pawn.transform.position + fleeVector);
+
+        //Not Working Code
+        /*
+        pawn.RotateTowards(fleeVector);
+
+        pawn.MoveForward(pawn.moveSpeed * flippedPercentOfFleeDistance);
+        */
+    }
+
+
+    //Patrol
+    public void Patrol()
+    {
+        if(waypoints.Length > currentWaypoint)
+        {
+            //Seek to the waypoint
+            Seek(waypoints[currentWaypoint]);
+            //IF AI is close enoug to the waypoint, then go to next one
+            if(Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) <= waypointStopDistance)
+            {
+                currentWaypoint++;
+            }
+            else
+            {
+                RestartPatrol();
+            }
+        }
+    }
+    //Restarts the patrol waypoints
+    protected void RestartPatrol()
+    {
+        //Set the index of the waypoints to 0
+        currentWaypoint = 0;
+    }
+
 
     //Transistion Functions
     public bool IsDistanceLessThan(GameObject target, float distance)
@@ -179,11 +272,44 @@ public class AIController : Controller
         currentState = state;
     }
 
+    //Targets the first player seen
+    public void TargetPlayerOne()
+    {
+        //Check if game manager exists
+        if(GameControl.instance != null)
+        {
+            //check if players exists
+            if(GameControl.instance.players != null)
+            {
+                //Check if players are in it
+                if(GameControl.instance.players.Count > 0)
+                {
+                    //Set the target object of the first player in the array
+                    target = GameControl.instance.players[0].pawn.gameObject;
+                }
+            }
+        }
+    }
+
+    //If it does obtain a target
+    protected bool HasTarget()
+    {
+        //return true if we do have a target, false if we dont
+        return (target != null);
+    }
+
+
+    //Visual distance representation
     public void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(pawn.transform.position, triggerDistance);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(pawn.transform.position, attackTriggerDistance);
+        if(pawn != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(pawn.transform.position, triggerDistance);
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(pawn.transform.position, attackTriggerDistance);
+
+        }
+
     }
 }

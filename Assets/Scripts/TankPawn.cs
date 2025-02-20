@@ -25,6 +25,12 @@ public class TankPawn : Pawn
         //Got from other script and allows the forward movement
         mover.Move(transform.forward, moveSpeed);
     }
+    public override void MoveForward(float speed)
+    {
+        //Got from other script and allows the forward movement
+        mover.Move(transform.forward, speed);
+    }
+
     public override void MoveBackward()
     {
         //Got from other script and allows the backward movement
