@@ -18,6 +18,9 @@ public abstract class Pawn : MonoBehaviour
     [Header("Gets the Shooter")]
     public Shooter shooter;
 
+    [Header("Gets the Noise Maker")]
+    public NoiseMaker noiseMaker;
+
     //Shooter Stats
     [Header("Shooter Stats")]
     public GameObject bullet;
@@ -31,6 +34,10 @@ public abstract class Pawn : MonoBehaviour
     public virtual void Start()
     {
         mover = GetComponent<Mover>();
+
+        shooter = GetComponent<Shooter>();
+
+        noiseMaker = GetComponent<NoiseMaker>();
     }
 
     // Update is called once per frame

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,11 +21,18 @@ public class AIController : Controller
     public float attackTriggerDistance;
     public float fleeDistance;
 
+    [Header("Hearing Stats")]
+    public float hearingRadius;
+
+
+    [Header("Seeing Stats")]
+    public float feildOfView;
+
     [Header("AI Waypoints Stats")]
     public float waypointStopDistance;
     public Transform[] waypoints;
 
-    private int currentWaypoint = 0;
+    public int currentWaypoint;
 
     Health health;
 
@@ -62,7 +70,7 @@ public class AIController : Controller
                 //Set to guard state
                 DoGuard();
                 //Check for any transitions
-                if (IsDistanceLessThan(target, triggerDistance))
+                if (CanHear(target))
                 {
                     ChangeState(AIState.Chase);
                 }
@@ -77,7 +85,7 @@ public class AIController : Controller
                 //Set to Chase state
                 DoChase();
                 //Check for any transitions
-                if (!IsDistanceLessThan(target, triggerDistance))
+                if (!CanHear(target))
                 {
                     ChangeState(AIState.Guard);
                 }
@@ -140,13 +148,13 @@ public class AIController : Controller
     public void DoChase()
     {
         //Chases the Player
-        Seek(target);
+        Seek(target.transform.position);
         triggerDistance = chaseTriggerDistance;
     }
 
     public void DoAttack()
     {
-        Seek(target);
+        Seek(target.transform.position);
 
         pawn.Shoot();
         //checks if the player is in the attack range then starts following and shooting
@@ -160,7 +168,7 @@ public class AIController : Controller
     }
     public void DoPatrol()
     {
-        //Does Nothing
+        Patrol();
     }
 
     public void Scan()
@@ -181,10 +189,12 @@ public class AIController : Controller
 
         pawn.MoveForward();
     }
+    
     public void Seek(Transform target)
     {
-        Seek(target);
+        Seek(target.position);
     }
+    
     public void Seek(GameObject target)
     {
         Seek(target.transform.position);
@@ -193,6 +203,7 @@ public class AIController : Controller
     {
         Seek(target.transform.position);
     }
+    
 
     //Flee
     public void Flee()
@@ -226,7 +237,7 @@ public class AIController : Controller
 
 
     //Patrol
-    public void Patrol()
+    protected void Patrol()
     {
         if(waypoints.Length > currentWaypoint)
         {
@@ -235,18 +246,20 @@ public class AIController : Controller
             //IF AI is close enoug to the waypoint, then go to next one
             if(Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) <= waypointStopDistance)
             {
+                Debug.Log("I am at waypoint " + currentWaypoint);
                 currentWaypoint++;
-            }
-            else
-            {
-                RestartPatrol();
-            }
+            }       
+        }
+        else
+        {
+            RestartPatrol();
         }
     }
     //Restarts the patrol waypoints
     protected void RestartPatrol()
     {
         //Set the index of the waypoints to 0
+        Debug.Log("I have reset");
         currentWaypoint = 0;
     }
 
@@ -298,6 +311,67 @@ public class AIController : Controller
         return (target != null);
     }
 
+    //Can hear the player
+    public bool CanHear(GameObject target)
+    {
+        //Get the noismaker
+        NoiseMaker noismaker = target.GetComponent<NoiseMaker>();
+        //if they dont have any noise maker, return false
+        if(noismaker == null)
+        {
+            return false;
+        }
+        //Making 0 noise and can't be heard, return false
+        if( noismaker.noiseDistance <= 0)
+        {
+            return false;
+        }
+        //If they are making noise, check to see if they are in radius, if they are not in radius m return false
+        float totalDistance = noismaker.noiseDistance + hearingRadius;
+        if(Vector3.Distance(pawn.transform.position, target.transform.position) <= totalDistance)
+        {
+            //Hear the target
+            return true;
+        }
+        else
+        {
+            //Cant hear the target
+            return false;
+        }
+        
+    }
+    
+    public bool CanSee(GameObject target)
+    {
+        //Checking if the pawn can see the target in its field of view
+        Vector3 vectorToTarget = target.transform.position - pawn.transform.position;
+
+        float angleToTarget = Vector3.Angle(vectorToTarget, pawn.transform.position);
+
+        
+
+        if(angleToTarget < feildOfView)
+        {
+            return checkRaycast();
+            
+        }
+        return false;
+    }
+
+    public bool checkRaycast()
+    {
+        //Checking Raycast
+        RaycastHit hit;
+
+        if (Physics.Raycast(pawn.transform.position, pawn.transform.forward, out hit))
+        {
+            if (hit.transform.gameObject == target)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     //Visual distance representation
     public void OnDrawGizmos()

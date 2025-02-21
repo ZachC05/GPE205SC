@@ -11,6 +11,8 @@ public class GameControl : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject tankPawnPrefab;
 
+    public GameObject spawnPos;
+
     //start poit of the tank
     public List<PlayerController> players;
     // Start is called before the first frame update
@@ -39,8 +41,8 @@ public class GameControl : MonoBehaviour
     public void SpawnPlayer()
     {
         //Spawns the yank and controller prefab
-        GameObject playerOj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-        GameObject tankObj = Instantiate(tankPawnPrefab, Vector3.zero, Quaternion.identity);
+        GameObject playerOj = Instantiate(playerPrefab,spawnPos.transform.position, Quaternion.identity);
+        GameObject tankObj = Instantiate(tankPawnPrefab, spawnPos.transform.position, Quaternion.identity);
 
         //Gets the controller script from the summoned player copntroller
         Controller playerController = playerOj.GetComponent<Controller>();
