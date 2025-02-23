@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3280688202176849251
+--- !u!1 &7221247729377403349
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8442806607450259287}
-  - component: {fileID: 4553413837133555898}
+  - component: {fileID: 5875979952533815903}
+  - component: {fileID: 3370708984421734834}
   m_Layer: 0
-  m_Name: AIControllerJugg
+  m_Name: AIControllerSniper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8442806607450259287
+--- !u!4 &5875979952533815903
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3280688202176849251}
+  m_GameObject: {fileID: 7221247729377403349}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.2654799, y: 0.38320476, z: 12.29}
@@ -32,13 +32,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4553413837133555898
+--- !u!114 &3370708984421734834
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3280688202176849251}
+  m_GameObject: {fileID: 7221247729377403349}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d2884990d433104d8ac94098bcb23ef, type: 3}
@@ -48,23 +48,23 @@ MonoBehaviour:
   control: {fileID: 0}
   exploder: 0
   scout: 0
-  jugg: 1
-  snipe: 0
-  secPerShot: 0
-  shotDamage: 0
-  shotSpeed: 0
+  jugg: 0
+  snipe: 1
+  secPerShot: 10
+  shotDamage: 20
+  shotSpeed: 10000
   ActiveScouts: []
   scoutCanSee: 0
   thisScoutSees: 0
   currentState: 0
   target: {fileID: 0}
-  triggerDistance: 10
-  chaseTriggerDistance: 20
-  guardTriggerDistance: 10
-  attackTriggerDistance: 15
+  triggerDistance: 0
+  chaseTriggerDistance: 0
+  guardTriggerDistance: 0
+  attackTriggerDistance: 0
   fleeDistance: 3
-  hearingRadius: 15
-  feildOfView: 45
+  hearingRadius: 30
+  feildOfView: 480
   waypointStopDistance: 2
   waypoints:
   - {fileID: 0}

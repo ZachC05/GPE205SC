@@ -81,11 +81,11 @@ public class AIController : Controller
         {
             TargetPlayerOne();
         }
-        if (thisScoutSees)
+        if (thisScoutSees && scout)
         {
            control.playerSeenByScout = true;
         }
-        else
+        else if(thisScoutSees && scout)
         {
             control.playerSeenByScout = false;
         }
@@ -168,7 +168,7 @@ public class AIController : Controller
                 {
                     if (CanHear(target) || CanSee(target) || scoutCanSee)
                     {
-                        ChangeState(AIState.Patrol);
+                        ChangeState(AIState.Attack);
                     }
                 }
                 //Check for any transitions
