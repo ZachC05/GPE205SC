@@ -7,6 +7,25 @@ public class AIController : Controller
 {
     //All the States that the AI can be in
     public enum AIState {Guard, Chase, Flee, Patrol, Attack, Scan, BackToPost};
+    [Header("Register Game Controller")]
+    public GameControl control;
+
+    //Displays what type the AI is
+    [Header("Select AI Type")]
+    public bool exploder;
+    public bool scout;
+    public bool jugg;
+    public bool snipe;
+
+    [Header("Scout Special Stat")]
+    public float secPerShot;
+    public float shotDamage;
+    public float shotSpeed;
+
+    [Header("Scout Special Stat")]
+    public GameObject[] ActiveScouts;
+    public bool scoutCanSee;
+    public bool thisScoutSees;
 
     //Selectable State
     [Header("Select Starting State")]
@@ -41,11 +60,18 @@ public class AIController : Controller
     // Start is called before the first frame update
     public override void Start()
     {
+        GameControl.instance.AI.Add(this);
         GameObject newPawn = Instantiate(TankPawn, transform.position, transform.rotation);
         pawn = newPawn.GetComponent<Pawn>();
         health = pawn.GetComponent<Health>();
         triggerDistance = guardTriggerDistance;
         base.Start();
+        if (snipe)
+        {
+            pawn.damageApplied = shotDamage;
+            pawn.bulletForce = shotSpeed;
+            pawn.secPerShot = secPerShot;
+        }
     }
 
     // Update is called once per frame
@@ -55,7 +81,14 @@ public class AIController : Controller
         {
             TargetPlayerOne();
         }
-
+        if (thisScoutSees)
+        {
+           control.playerSeenByScout = true;
+        }
+        else
+        {
+            control.playerSeenByScout = false;
+        }
         GetInputs();
 
         base.Update();
@@ -70,36 +103,38 @@ public class AIController : Controller
                 //Set to guard state
                 DoGuard();
                 //Check for any transitions
-                if (CanHear(target))
+                if (jugg)
                 {
-                    ChangeState(AIState.Chase);
+                    if (CanSee(target) || CanHear(target))
+                    {
+                        ChangeState(AIState.Attack);
+                    }
                 }
-                else if (health.currentHealth < health.maxHealth / 2)
+                else
                 {
-                    Debug.Log("Enter Flee State");
-                    ChangeState(AIState.Flee);
+                    ChangeState(AIState.Patrol);
                 }
-
                 break;
             case AIState.Chase:
                 //Set to Chase state
                 DoChase();
                 //Check for any transitions
-                if (!CanHear(target))
+                if (jugg)
                 {
-                    ChangeState(AIState.Guard);
+                    if (!CanHear(target) && !CanSee(target) && jugg)
+                    {
+                        ChangeState(AIState.Guard);
+                    }
+                    else if (!CanHear(target) && !CanSee(target) && !jugg)
+                    {
+                        ChangeState(AIState.Guard);
+                    }
                 }
-                else if(IsDistanceLessThan(target, attackTriggerDistance))
+                else if (exploder)
                 {
-                    Debug.Log("Enter Attack State");
-                    ChangeState(AIState.Attack);
+                    //Do Nothing BUT chase and start a time for destroying itself
                 }
-                else if (health.currentHealth < health.maxHealth / 2 + 1)
-                {
-                    Debug.Log("Enter Flee State");
-                    ChangeState(AIState.Flee);
-                }
-
+                
                 break;
             case AIState.Flee:
                 //Set to Flee state
@@ -114,16 +149,48 @@ public class AIController : Controller
             case AIState.Patrol:
                 //Set to Patrol state
                 DoPatrol();
+                if (exploder)
+                {
+                    if (CanSee(target) || CanHear(target) || scoutCanSee)
+                    {
+                        ChangeState(AIState.Chase);
+                    }
+                } 
+                else if (scout)
+                {
+                    if(CanHear(target) || CanSee(target))
+                    {
+                        thisScoutSees = true;
+                        ChangeState(AIState.Attack);
+                    }
+                }
+                else if (snipe)
+                {
+                    if (CanHear(target) || CanSee(target) || scoutCanSee)
+                    {
+                        ChangeState(AIState.Patrol);
+                    }
+                }
                 //Check for any transitions
                 break;
             case AIState.Attack:
                 //Set to Attack state
                 DoAttack();
                 //Check for any transitions
-                if (!IsDistanceLessThan(target, attackTriggerDistance))
+                if (scout)
                 {
-                    Debug.Log("Left Attack State");
-                    ChangeState(AIState.Chase);
+                    if (!CanHear(target) && !CanSee(target))
+                    {
+                        thisScoutSees = false;
+                        ChangeState(AIState.Patrol);
+                    }
+                }
+                else if (snipe)
+                {
+                    if (!CanHear(target) && !CanSee(target) && !scoutCanSee)
+                    {
+                        ChangeState(AIState.Patrol);
+                    }
                 }
                 break;
             case AIState.Scan:
@@ -147,6 +214,10 @@ public class AIController : Controller
 
     public void DoChase()
     {
+        if (exploder)
+        {
+            pawn.moveSpeed = 18;
+        }
         //Chases the Player
         Seek(target.transform.position);
         triggerDistance = chaseTriggerDistance;
@@ -154,11 +225,17 @@ public class AIController : Controller
 
     public void DoAttack()
     {
-        Seek(target.transform.position);
+        if (!jugg && !snipe)
+        {
+            Seek(target.transform.position);
+        }
+        else
+        {
+            pawn.RotateTowards(target.transform.position);
+        }
+
 
         pawn.Shoot();
-        //checks if the player is in the attack range then starts following and shooting
-
     }
 
 
@@ -259,7 +336,6 @@ public class AIController : Controller
     protected void RestartPatrol()
     {
         //Set the index of the waypoints to 0
-        Debug.Log("I have reset");
         currentWaypoint = 0;
     }
 
@@ -348,9 +424,7 @@ public class AIController : Controller
 
         float angleToTarget = Vector3.Angle(vectorToTarget, pawn.transform.position);
 
-        
-
-        if(angleToTarget < feildOfView)
+        if (angleToTarget < feildOfView)
         {
             return checkRaycast();
             
@@ -367,6 +441,8 @@ public class AIController : Controller
         {
             if (hit.transform.gameObject == target)
             {
+
+                
                 return true;
             }
         }
@@ -382,6 +458,10 @@ public class AIController : Controller
             Gizmos.DrawWireSphere(pawn.transform.position, triggerDistance);
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(pawn.transform.position, attackTriggerDistance);
+
+            //Hearing Radius
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(pawn.transform.position, hearingRadius);
 
         }
 

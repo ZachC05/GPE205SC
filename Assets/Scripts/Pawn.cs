@@ -27,7 +27,7 @@ public abstract class Pawn : MonoBehaviour
     public float damageApplied;
     public float bulletForce;
     public float bulletLifespan;
-
+    public float secPerShot;
     //rate of fire
     public float fireRate;
     // Start is called before the first frame update

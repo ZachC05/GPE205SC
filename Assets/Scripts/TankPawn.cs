@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TankPawn : Pawn
 {
-    private float secPerShot;
 
     public float nextShootTime;
 

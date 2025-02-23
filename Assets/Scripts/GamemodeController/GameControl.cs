@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameControl : MonoBehaviour
@@ -15,11 +16,16 @@ public class GameControl : MonoBehaviour
 
     //start poit of the tank
     public List<PlayerController> players;
+    public List<AIController> AI;
+
+    //So scout can reveal the players location
+    public bool playerSeenByScout;
     // Start is called before the first frame update
     public void Awake()
     {
+
         //if another instance of this object exist, this will be destroyed
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
 
@@ -31,10 +37,31 @@ public class GameControl : MonoBehaviour
         }
 
         players = new List<PlayerController>();
+
+    }
+
+    private void Update()
+    {
+        foreach (AIController ai in AI)
+        {
+            if (playerSeenByScout)
+            {
+                ai.scoutCanSee = true;
+            }
+            else
+            {
+                ai.scoutCanSee = false;
+            }
+        }
+
     }
 
     public void Start()
     {
+        foreach (AIController ai in AI)
+        {
+            ai.control = gameObject.GetComponent<GameControl>();
+        }
         SpawnPlayer();
     }
 
