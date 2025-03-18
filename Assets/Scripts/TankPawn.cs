@@ -24,7 +24,7 @@ public class TankPawn : Pawn
         {
             if(noiseMaker != null)
             {
-                if (rb.velocity.magnitude > 0)
+                if (rb.velocity.magnitude > 0.2)
                 {
                     noiseMaker.noiseDistance = 5;
                 }
