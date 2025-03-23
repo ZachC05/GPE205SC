@@ -16,7 +16,7 @@ public class RoomGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UnityEngine.Random.InitState(DateToInt(DateTime.Now));
+        //UnityEngine.Random.InitState(DateToInt(DateTime.Now));
         GenerateMap();
     }
 

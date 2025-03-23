@@ -4,6 +4,9 @@ using UnityEngine;
 
 public abstract class Controller : MonoBehaviour
 {
+    //locks controls
+    public bool LockControls;
+
     //variable to hold the pawn
     public Pawn pawn;
     // Start is called before the first frame update

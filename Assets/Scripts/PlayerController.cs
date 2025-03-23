@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class PlayerController : Controller
 {
+    //Locks Controls for when transitioning
+    [Header("Control Locking")]
+
+
     //Keys are use to get input from players
     [Header("Keys for Moving")]
     public KeyCode moveForwardKey;
@@ -35,7 +39,11 @@ public class PlayerController : Controller
     // Update is called once per frame
     public override void Update()
     {
-        GetInputs();
+        //locks controls if true
+        if (!LockControls)
+        {
+            GetInputs();
+        }
         base.Update();
     }
 

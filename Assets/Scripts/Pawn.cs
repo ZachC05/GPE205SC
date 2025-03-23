@@ -4,6 +4,9 @@ using UnityEngine;
 
 public abstract class Pawn : MonoBehaviour
 {
+    
+    public Controller owner;
+
     //Speed
     [Header("Speed")]
     //Move speed Variable (forward and backwards movement)

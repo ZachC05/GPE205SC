@@ -18,6 +18,10 @@ public class GameControl : MonoBehaviour
     public List<PlayerController> players;
     public List<AIController> AI;
 
+    public Vector3 CamSpawnPos;
+    public Vector3 CamSpawnRot;
+
+
     //So scout can reveal the players location
     public bool playerSeenByScout;
     // Start is called before the first frame update
@@ -42,6 +46,7 @@ public class GameControl : MonoBehaviour
 
     private void Update()
     {
+        //adjusts all of the ai to see the player
         foreach (AIController ai in AI)
         {
             if (playerSeenByScout)
@@ -68,7 +73,7 @@ public class GameControl : MonoBehaviour
     public void SpawnPlayer()
     {
         //Spawns the yank and controller prefab
-        GameObject playerOj = Instantiate(playerPrefab,spawnPos.transform.position, Quaternion.identity);
+        GameObject playerOj = Instantiate(playerPrefab,CamSpawnPos, Quaternion.LookRotation(CamSpawnRot));
         GameObject tankObj = Instantiate(tankPawnPrefab, spawnPos.transform.position, Quaternion.identity);
 
         //Gets the controller script from the summoned player copntroller
@@ -79,6 +84,9 @@ public class GameControl : MonoBehaviour
 
         //assigns the controller to the tank the player can control
         playerController.pawn = tankpawn;
+
+        //assigner the owner player controller
+        tankpawn.owner = playerController;
     }
 
 
