@@ -232,6 +232,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3477392972325189348, guid: ca3cfe4bcbb376c4ab6b583f50e5c4cb, type: 3}
+      propertyPath: powerup.isPerminent
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4510813276210192010, guid: ca3cfe4bcbb376c4ab6b583f50e5c4cb, type: 3}
       propertyPath: m_Name
       value: healthPickup

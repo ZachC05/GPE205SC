@@ -36,11 +36,19 @@ public class moveCamera : MonoBehaviour
         pawn = other.GetComponent<TankPawn>();
         if(pawn != null)
         {
-            cam = pawn.owner.GetComponent<Camera>();
-            if(cam != null)
+            if(pawn.owner != null)
             {
-                StartCoroutine(LockCamandMove(pawn, cam));
+                cam = pawn.owner.GetComponent<Camera>();
+                if (cam != null)
+                {
+                    StartCoroutine(LockCamandMove(pawn, cam));
+                }
+                else
+                {
+                    Debug.Log(other.gameObject.name + "Doesn't have a cam");
+                }
             }
+
         }
     }
     

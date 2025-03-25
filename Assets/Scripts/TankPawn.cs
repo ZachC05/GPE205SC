@@ -6,8 +6,10 @@ public class TankPawn : Pawn
 {
 
     public float nextShootTime;
-
+    
     public Rigidbody rb;
+
+
     // Start is called before the first frame update
     public override void Start()
     {
@@ -20,21 +22,6 @@ public class TankPawn : Pawn
     // Update is called once per frame
     public override void Update()
     {
-        if(rb != null)
-        {
-            if(noiseMaker != null)
-            {
-                if (rb.velocity.magnitude > 0.2)
-                {
-                    noiseMaker.noiseDistance = 5;
-                }
-                else
-                {
-                    noiseMaker.noiseDistance = 0;
-                }
-            }
-
-        }
         base.Update();
     }
     public override void MoveForward()
@@ -63,6 +50,12 @@ public class TankPawn : Pawn
         //Got from other script and allows the left rotation
         mover.Rotate(-turnSpeed);
     }
+
+    public void MakeNoise()
+    {
+        noiseMaker.noiseDistance = 5;
+    }
+
     public override void Shoot()
     {
         //sets the fire rate
@@ -75,16 +68,16 @@ public class TankPawn : Pawn
         }
 
     }
+
     private void OnDrawGizmos()
     {
-        if(noiseMaker != null)
+        if (noiseMaker != null)
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, noiseMaker.noiseDistance);
         }
- 
-    }
 
+    }
     //Rotates the object, mainly for AI to the position of the target
     public override void RotateTowards(Vector3 TargetPos)
     {

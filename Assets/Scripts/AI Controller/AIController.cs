@@ -83,13 +83,25 @@ public class AIController : Controller
         }
         if (thisScoutSees && scout)
         {
-           control.playerSeenByScout = true;
+            control = GameObject.Find("GamemodeControl").GetComponent<GameControl>();
+            if(control != null)
+            {
+                control.playerSeenByScout = true;
+            }
+            else
+            {
+                Debug.Log("Unable to get game control");
+            }
         }
         else if(thisScoutSees && scout)
         {
             control.playerSeenByScout = false;
         }
-        GetInputs();
+        if(pawn != null)
+        {
+            GetInputs();
+        }
+        
 
         base.Update();
     }

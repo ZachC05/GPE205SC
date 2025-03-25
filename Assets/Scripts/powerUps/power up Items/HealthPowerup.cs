@@ -24,7 +24,7 @@ public class HealthPowerup : Powerup
         if (targetHealth != null)
         {
             // The second parameter is the pawn who caused the healing - in this case, they healed themselves
-            targetHealth.TakeDamage(healthToAdd, target.GetComponent<Pawn>());
+            //do nothing
         }
     }
 }

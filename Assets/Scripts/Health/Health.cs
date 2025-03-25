@@ -38,7 +38,7 @@ public class Health : MonoBehaviour
     {
         //Health Damage
         currentHealth += amout;
-        Debug.Log(source.name + " Healed" + amout + " health to " + gameObject.name);
+        Debug.Log(source.name + " Healed " + amout + " health to " + gameObject.name);
 
         //Can't go above maxHealth
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
