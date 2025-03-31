@@ -325,8 +325,8 @@ GameObject:
   m_Component:
   - component: {fileID: 421816}
   - component: {fileID: 11411052}
-  - component: {fileID: -4783032630689607219}
-  - component: {fileID: 2003243210141424243}
+  - component: {fileID: -5608928448256695267}
+  - component: {fileID: 7351984883525315229}
   m_Layer: 3
   m_Name: Room 1
   m_TagString: Untagged
@@ -371,7 +371,7 @@ MonoBehaviour:
   doorSouth: {fileID: 109208}
   doorEast: {fileID: 197350}
   doorWest: {fileID: 121800}
---- !u!114 &-4783032630689607219
+--- !u!114 &-5608928448256695267
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -384,9 +384,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goToY: {x: 0, y: 60, z: 0}
-  bc: {fileID: 2003243210141424243}
   camAnchor: {fileID: 9109089203862943347}
---- !u!65 &2003243210141424243
+--- !u!65 &7351984883525315229
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -405,7 +404,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 50, y: 5, z: 50}
+  m_Size: {x: 48, y: 5, z: 48}
   m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &190428
 GameObject:

@@ -8,8 +8,15 @@ public class Room : MonoBehaviour {
 	public GameObject doorEast;
 	public GameObject doorWest;
 
+	public GameObject playerSpawner;
+	public bool playerSpawn;
 
-
-
+	void Start()
+	{
+		if (playerSpawn)
+		{
+			
+		}
+	}
 
 }

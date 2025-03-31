@@ -8,7 +8,6 @@ public class moveCamera : MonoBehaviour
     private Camera cam;
     bool goingToNextArea;
     public Vector3 goToY;
-    public Collider bc;
     public GameObject camAnchor;
 
     // Start is called before the first frame update

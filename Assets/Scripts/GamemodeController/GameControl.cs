@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ public class GameControl : MonoBehaviour
     public Vector3 CamSpawnPos;
     public Vector3 CamSpawnRot;
 
-
+    RoomGenerator roomGenerator;
     //So scout can reveal the players location
     public bool playerSeenByScout;
     // Start is called before the first frame update
@@ -63,15 +64,40 @@ public class GameControl : MonoBehaviour
 
     public void Start()
     {
+        roomGenerator = GetComponent<RoomGenerator>();
+
+        //Generates Map
+        roomGenerator.GenerateMap();
+
+        //Sets The Camera Position
+        CamSpawnPos.x = GameObject.FindGameObjectWithTag("playerSpawn").gameObject.transform.position.x;
+        CamSpawnPos.z = GameObject.FindGameObjectWithTag("playerSpawn").gameObject.transform.position.z;
+
+        //Spawns Player
+        SpawnPlayer();
+
+        //Gets the AI
+        GetAI();
+
+        
+
+    }
+
+
+
+
+    public void GetAI()
+    {
         foreach (AIController ai in AI)
         {
             ai.control = gameObject.GetComponent<GameControl>();
         }
-        SpawnPlayer();
     }
 
     public void SpawnPlayer()
     {
+        spawnPos = GameObject.FindGameObjectWithTag("playerSpawn").gameObject;
+
         //Spawns the yank and controller prefab
         GameObject playerOj = Instantiate(playerPrefab,CamSpawnPos, Quaternion.LookRotation(CamSpawnRot));
         GameObject tankObj = Instantiate(tankPawnPrefab, spawnPos.transform.position, Quaternion.identity);

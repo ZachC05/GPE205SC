@@ -81,6 +81,10 @@ public class AIController : Controller
         {
             TargetPlayerOne();
         }
+        else
+        {
+            //nothing
+        }
         if (thisScoutSees && scout)
         {
             control = GameObject.Find("GamemodeControl").GetComponent<GameControl>();

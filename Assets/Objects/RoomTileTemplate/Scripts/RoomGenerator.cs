@@ -5,19 +5,28 @@ using System;
 
 public class RoomGenerator : MonoBehaviour
 {
+    [Header("Seed Settings")]
     public bool isMapOfTheDay;
+    public bool RandomSeed;
     public int mapSeed;
+
+
+    [Header("Grid Settings")]
     public GameObject[] gridPrefabs;
     public int rows;
     public int cols;
     public float roomWidth = 50.0f;
     public float roomHeight = 50.0f;
     private Room[,] grid;
+
+    [Header("Player Room")]
+    //player spawnRoom
+    public GameObject playerSpawnRoom;
+
     // Start is called before the first frame update
     void Start()
     {
         //UnityEngine.Random.InitState(DateToInt(DateTime.Now));
-        GenerateMap();
     }
 
     // Update is called once per frame
@@ -32,6 +41,69 @@ public class RoomGenerator : MonoBehaviour
         return gridPrefabs[UnityEngine.Random.Range(0, gridPrefabs.Length)];
     }
 
+    public void ReplaceRoomWithPlayerSpawn()
+    {
+        //gets the grid number
+        int colNum = UnityEngine.Random.Range(0, cols);
+        int rowNum = UnityEngine.Random.Range(0, rows);
+
+        //deletes the old grid placement
+        GameObject oldRoom = grid[colNum, rowNum].gameObject;
+        Destroy(oldRoom);
+
+        // Figure out the location. 
+        float xPosition = roomWidth * colNum;
+        float zPosition = roomHeight * rowNum;
+        Vector3 newPosition = new Vector3(xPosition, 0.0f, zPosition);
+
+        //generates the new room
+        GameObject playerSpawn = Instantiate(playerSpawnRoom, newPosition, Quaternion.identity) as GameObject;
+        playerSpawn.transform.parent = this.transform;
+
+        //give the room a name
+        playerSpawn.name = "Player Spawn Room__ " + colNum + "," + rowNum;
+
+        Room playerRoom = playerSpawn.GetComponent<Room>();
+
+        // Open the doors
+        // If we are on the bottom row, open the north door
+        if (rowNum == 0)
+        {
+            playerRoom.doorNorth.SetActive(false);
+        }
+        else if (rowNum == rows - 1)
+        {
+            // Otherwise, if we are on the top row, open the south door
+            Destroy(playerRoom.doorSouth);
+        }
+        else
+        {
+            // Otherwise, we are in the middle, so open both doors
+            Destroy(playerRoom.doorNorth);
+            Destroy(playerRoom.doorSouth);
+        }
+
+        // If we are on the bottom row, open the north door
+        if (colNum == 0)
+        {
+            playerRoom.doorEast.SetActive(false);
+        }
+        else if (colNum == cols - 1)
+        {
+            // Otherwise, if we are on the top row, open the south door
+            Destroy(playerRoom.doorWest);
+        }
+        else
+        {
+            // Otherwise, we are in the middle, so open both doors
+            Destroy(playerRoom.doorEast);
+            Destroy(playerRoom.doorWest);
+        }
+
+        // Save it to the grid array
+        grid[colNum, rowNum] = playerRoom;
+    }
+
     public void GenerateMap()
     {
        
@@ -43,7 +115,12 @@ public class RoomGenerator : MonoBehaviour
         {
             int mapSeed = DateToInt(DateTime.Now);
         }
-        UnityEngine.Random.InitState(mapSeed);
+
+        if (!RandomSeed)
+        {
+            UnityEngine.Random.InitState(mapSeed);
+        }
+
         // Clear out the grid - "column" is our X, "row" is our Y
         grid = new Room[cols, rows];
 
@@ -109,6 +186,9 @@ public class RoomGenerator : MonoBehaviour
                 grid[currentCol, currentRow] = tempRoom;
             }
         }
+
+        //at the end of generating a map, intert a player spawn
+        ReplaceRoomWithPlayerSpawn();
     }
 
     public int DateToInt(DateTime dateToUse)
