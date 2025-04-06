@@ -11,12 +11,4 @@ public class Room : MonoBehaviour {
 	public GameObject playerSpawner;
 	public bool playerSpawn;
 
-	void Start()
-	{
-		if (playerSpawn)
-		{
-			
-		}
-	}
-
 }

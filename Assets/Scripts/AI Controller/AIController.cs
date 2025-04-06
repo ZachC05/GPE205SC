@@ -57,11 +57,14 @@ public class AIController : Controller
 
     [Header("Spawning a Starting Tank")]
     public GameObject TankPawn;
+    GameObject spawnedPawn;
     // Start is called before the first frame update
     public override void Start()
     {
         GameControl.instance.AI.Add(this);
+        control = GameObject.Find("GamemodeControl").GetComponent<GameControl>();
         GameObject newPawn = Instantiate(TankPawn, transform.position, transform.rotation);
+        spawnedPawn = newPawn;
         pawn = newPawn.GetComponent<Pawn>();
         health = pawn.GetComponent<Health>();
         triggerDistance = guardTriggerDistance;
@@ -109,7 +112,6 @@ public class AIController : Controller
 
         base.Update();
     }
-
     public override void GetInputs()
     {
         //This is where the decision making will happen
@@ -481,5 +483,15 @@ public class AIController : Controller
 
         }
 
+    }
+
+    public void DestroyEverything()
+    {
+        if(TankPawn != null)
+        {
+            Destroy(spawnedPawn);
+        }
+
+        Destroy(gameObject);
     }
 }

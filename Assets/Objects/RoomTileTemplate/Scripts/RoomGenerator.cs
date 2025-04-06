@@ -23,6 +23,9 @@ public class RoomGenerator : MonoBehaviour
     //player spawnRoom
     public GameObject playerSpawnRoom;
 
+    //random stuff for testing and securing bugs
+    public bool firstMapGenerated;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -106,7 +109,7 @@ public class RoomGenerator : MonoBehaviour
 
     public void GenerateMap()
     {
-       
+       firstMapGenerated = true;
         if (isMapOfTheDay)
         {
             mapSeed = DateToInt(DateTime.Now.Date);
@@ -197,4 +200,24 @@ public class RoomGenerator : MonoBehaviour
         return dateToUse.Year + dateToUse.Month + dateToUse.Day + dateToUse.Hour + dateToUse.Minute + dateToUse.Second + dateToUse.Millisecond;
     }
 
+    public void DeleteMap()
+    {
+        if (firstMapGenerated)
+        {
+            // For each grid row...
+            for (int currentRow = 0; currentRow < rows; currentRow++)
+            {
+                // for each column in that row
+                for (int currentCol = 0; currentCol < cols; currentCol++)
+                {
+                    GameObject tempRoom = grid[currentCol, currentRow].gameObject;
+
+                    Debug.Log(tempRoom + " Is Being Deleted");
+                    Destroy(tempRoom.gameObject);
+                }
+            }
+            firstMapGenerated = false;
+        }
+
+    }
 }
