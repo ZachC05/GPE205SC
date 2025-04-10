@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class AIController : Controller
 {
+    [Header("UI")]
+    public GameObject HealthUI;
+    GameObject uiControl;
+    public Vector3 spawnAddition;
+
     //All the States that the AI can be in
     public enum AIState {Guard, Chase, Flee, Patrol, Attack, Scan, BackToPost};
     [Header("Register Game Controller")]
@@ -68,6 +73,10 @@ public class AIController : Controller
         pawn = newPawn.GetComponent<Pawn>();
         health = pawn.GetComponent<Health>();
         triggerDistance = guardTriggerDistance;
+        Vector3 newSpawnPosition = new Vector3(transform.position.x, transform.position.y + spawnAddition.y, transform.position.z);
+        Vector3 spawnRotation = new Vector3(90, 0, 0);
+        uiControl = Instantiate(HealthUI, spawnAddition, Quaternion.Euler(spawnRotation));
+        uiControl.GetComponent<HPFollowAI>().target = spawnedPawn;
         base.Start();
         if (snipe)
         {
@@ -493,5 +502,24 @@ public class AIController : Controller
         }
 
         Destroy(gameObject);
+    }
+
+    public override void UpdatePersonalUI()
+    {
+        //there is no UI
+    }
+
+    public override void AddPoints(int pointsAmount)
+    {
+        //needs no points
+    }
+
+    public override void RemovePoints(int pointsAmount)
+    {
+        //needs no points
+    }
+    public override void RemvoeLives()
+    {
+        //doesnt have lives
     }
 }

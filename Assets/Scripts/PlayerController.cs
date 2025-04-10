@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : Controller
 {
-    //Locks Controls for when transitioning
-    [Header("Control Locking")]
+    //players own canvas and carp
+    [Header("Players Canvas Settings")]
+    public GameObject PlayerOwnedCanvas;
+    public TMP_Text pointsText;
+    public TMP_Text livesText;
+    GameObject permCanvas;
 
 
     //Keys are use to get input from players
@@ -20,9 +25,18 @@ public class PlayerController : Controller
 
     [Header("Keys for Shooting || Can left click to shoot")]
     public KeyCode shootKey;
+
+    [Header("Lives")]
+    public int lives = 3;
+
+    
+
+
+
     // Start is called before the first frame update
     public override void Start()
     {
+
         //If we have a GameManager
         if(GameControl.instance != null)
         {
@@ -32,6 +46,31 @@ public class PlayerController : Controller
                 //Add to manager
                 GameControl.instance.players.Add(this);
             }
+        }
+        permCanvas = Instantiate(PlayerOwnedCanvas, gameObject.transform);
+        getCamera getCam = permCanvas.GetComponent<getCamera>();
+        Camera cam = GetComponent<Camera>();
+        if(cam != null)
+        {
+            getCam.getandset(cam);
+        }
+        else
+        {
+            Debug.Log("Failed to get cam");
+        }
+
+
+        pointsText = getCam.points;
+        livesText = getCam.lives;
+
+        //makes sure the UI exists
+        if (pointsText != null && livesText != null)
+        {
+            UpdatePersonalUI();
+        }
+        else
+        {
+            Debug.Log("Please enter a UI for the player");
         }
         base.Start();
     }
@@ -116,5 +155,29 @@ public class PlayerController : Controller
                 GameControl.instance.players.Remove(this);
             }
         }
+    }
+
+    public override void AddPoints(int pointsAmount)
+    {
+        points += pointsAmount;
+        UpdatePersonalUI();
+    }
+
+    public override void RemovePoints(int pointsAmount)
+    {
+        points -= pointsAmount;
+        UpdatePersonalUI();
+    }
+
+    public override void UpdatePersonalUI()
+    {
+        pointsText.text = "Points: " + points;
+        livesText.text = "Lives: " + lives;
+    }
+
+    public override void RemvoeLives()
+    {
+        lives--;
+        UpdatePersonalUI();
     }
 }

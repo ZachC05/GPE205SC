@@ -44,12 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d2884990d433104d8ac94098bcb23ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LockControls: 0
   pawn: {fileID: 0}
+  points: 0
+  HealthUI: {fileID: 6272042172084190957, guid: f35a5bee90c120d459bb34201720faa1, type: 3}
+  spawnAddition: {x: 0, y: 10, z: 0}
   control: {fileID: 0}
   exploder: 0
   scout: 1
   jugg: 0
   snipe: 0
+  secPerShot: 0
+  shotDamage: 0
+  shotSpeed: 0
   ActiveScouts: []
   scoutCanSee: 0
   thisScoutSees: 0

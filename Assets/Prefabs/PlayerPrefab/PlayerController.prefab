@@ -18,21 +18,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5046651118911623335
-Transform:
+--- !u!224 &5046651118911623335
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1675188684739502410}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.10691672, y: 0.10691672, z: 0.10691672}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 19200, y: 10800}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4351659430833174853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,11 +51,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LockControls: 0
   pawn: {fileID: 0}
+  points: 0
+  PlayerOwnedCanvas: {fileID: 2656679273017260403, guid: c6e75d3a522e4c6439843e56be243c93, type: 3}
+  pointsText: {fileID: 0}
+  livesText: {fileID: 0}
   moveForwardKey: 119
   moveBackwardKey: 115
   rotateRightKey: 100
   rotateLeftKey: 97
   shootKey: 0
+  lives: 3
 --- !u!20 &3542404615441608784
 Camera:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ public class Health : MonoBehaviour
 {
     public float currentHealth;
     public float maxHealth;
+    public int pawnWorth;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +47,7 @@ public class Health : MonoBehaviour
     public void Die(Pawn source)
     {
         Debug.Log(source.name + " Killed " + gameObject.name);
+        source.owner.AddPoints(pawnWorth);
         Destroy(gameObject);
     }
 }
