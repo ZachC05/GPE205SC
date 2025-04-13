@@ -7,11 +7,20 @@ public class Health : MonoBehaviour
     public float currentHealth;
     public float maxHealth;
     public int pawnWorth;
+
+    Controller playerController;
+    TankPawn owner;
+
+    public AudioSource deathSFX;
+    public AudioSource hitSFX;
+
     // Start is called before the first frame update
     void Start()
     {
         //Sets Health to be equal to max health at start
         currentHealth = maxHealth;
+        owner = GetComponent<TankPawn>();
+        playerController = owner.owner;
     }
 
     // Update is called once per frame
@@ -22,6 +31,7 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float amout, Pawn source)
     {
+        hitSFX.Play();
         //Takes damage
         currentHealth -= amout;
         Debug.Log(source.name + " Did " + amout + " damage to " + gameObject.name);
@@ -46,8 +56,32 @@ public class Health : MonoBehaviour
     }
     public void Die(Pawn source)
     {
+        deathSFX.Play();
         Debug.Log(source.name + " Killed " + gameObject.name);
-        source.owner.AddPoints(pawnWorth);
-        Destroy(gameObject);
+
+        
+        if(playerController != null)
+        {
+            if (playerController.lives > 0)
+            {
+                source.owner.AddPoints(pawnWorth);
+
+                GetHealth(20, source);
+                playerController.lives--;
+                transform.position = GameControl.instance.spawnPos.transform.position;
+
+
+            }
+            else
+            {
+                deathSFX.Play();
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
     }
 }

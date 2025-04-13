@@ -2,12 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
+using TMPro;
+using Unity.VisualScripting;
+using JetBrains.Annotations;
 
 public class RoomGenerator : MonoBehaviour
 {
+    [Header("Menu UI Sound")]
+    public AudioSource menuUIAudio;
+
+    [Header("UI Settings")]
+    public Toggle SetmapOfTheDay;
+    public Toggle SetRandomSeed;
+    public Toggle SetSeed;
+    public TextMeshPro inputFeild;
+
+
     [Header("Seed Settings")]
     public bool isMapOfTheDay;
     public bool RandomSeed;
+    public bool setSeed;
     public int mapSeed;
 
 
@@ -114,15 +129,21 @@ public class RoomGenerator : MonoBehaviour
         {
             mapSeed = DateToInt(DateTime.Now.Date);
         }
-        else
+
+        if(SetSeed)
         {
-            int mapSeed = DateToInt(DateTime.Now);
+            //nothihng needed
         }
 
-        if (!RandomSeed)
+        if(RandomSeed)
         {
-            UnityEngine.Random.InitState(mapSeed);
+            int randomSeed = UnityEngine.Random.Range(1, 99999);
+            Debug.Log(randomSeed);
+            mapSeed = randomSeed;
         }
+
+        Debug.Log("map seed is " + mapSeed);
+        UnityEngine.Random.InitState(mapSeed);
 
         // Clear out the grid - "column" is our X, "row" is our Y
         grid = new Room[cols, rows];
@@ -219,5 +240,88 @@ public class RoomGenerator : MonoBehaviour
             firstMapGenerated = false;
         }
 
+    }
+
+    public void ToggleMapOfTheDay()
+    {
+        menuUIAudio.Play();
+        if (SetmapOfTheDay.isOn == true)
+        {
+            Debug.Log("Set it to a daily map");
+            isMapOfTheDay = true;
+
+            //sets others to false
+            RandomSeed = false;
+            setSeed = false;
+
+            //resets the values so that play must have a form of map generation
+            SetRandomSeed.isOn = false;
+            SetSeed.isOn = false;
+
+
+            SetRandomSeed.interactable = true;
+            SetSeed.interactable = true;
+
+            
+        }
+        SetmapOfTheDay.interactable = false;
+    }
+
+    public void ToggleRandomMap()
+    {
+        menuUIAudio.Play();
+        if (SetRandomSeed.isOn == true)
+        {
+            Debug.Log("Set it to a random map");
+            RandomSeed = true;
+
+            //sets others to false
+            isMapOfTheDay = false;
+            setSeed = false;
+
+            //resets the values so that play must have a form of map generation
+            SetmapOfTheDay.isOn = false;
+            SetSeed.isOn = false;
+
+
+            SetmapOfTheDay.interactable = true;
+            SetSeed.interactable = true;
+
+
+        }
+        SetRandomSeed.interactable = false;
+    }
+
+    public void ToggleSetSeed()
+    {
+        menuUIAudio.Play();
+        if (SetSeed.isOn == true)
+        {
+            setSeed = true;
+
+            //sets others to false
+            RandomSeed = false;
+            isMapOfTheDay = false;
+
+            //resets the values so that play must have a form of map generation
+            SetRandomSeed.isOn = false;
+            SetmapOfTheDay.isOn = false;
+
+
+            SetRandomSeed.interactable = true;
+            SetmapOfTheDay.interactable = true;
+
+
+        }
+        SetSeed.interactable = false;
+
+        //for now return a random number until figure out
+        //COME BACK BEFORE FINAL
+    }
+
+    public void getInput(string input)
+    {
+        mapSeed = int.Parse(input);
+        Debug.Log(input);
     }
 }

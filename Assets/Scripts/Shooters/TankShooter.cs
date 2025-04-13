@@ -5,12 +5,12 @@ using UnityEngine;
 public class TankShooter : Shooter
 {
     public Transform firepoint;
-
+    public AudioSource shootSFX;
 
     //On start of the game
     public override void Start()
     {
-        
+        shootSFX = GetComponent<AudioSource>();
     }
     public override void Update()
     {
@@ -19,6 +19,7 @@ public class TankShooter : Shooter
 
     public override void Shoot(GameObject BulletPrefab, float force, float damage, float lifespan)
     {
+        shootSFX.Play();
         //Spawns the bullet
         GameObject newshell = Instantiate(BulletPrefab, firepoint.transform.position, firepoint.transform.rotation);
 

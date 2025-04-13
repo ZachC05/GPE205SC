@@ -13,6 +13,9 @@ public abstract class Controller : MonoBehaviour
     [Header("Points")]
     //amount of points the player owns
     public int points;
+
+    [Header("Lives")]
+    public int lives = 3;
     // Start is called before the first frame update
     public virtual void Start()
     {
@@ -33,4 +36,6 @@ public abstract class Controller : MonoBehaviour
     public abstract void GetInputs();
 
     public abstract void RemvoeLives();
+
+    public abstract void ResapawnPlayer();
 }

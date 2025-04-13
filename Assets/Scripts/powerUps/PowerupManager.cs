@@ -8,6 +8,8 @@ public class PowerupManager : MonoBehaviour
 
     private List<Powerup> removedPowerupQueue;
 
+    public AudioSource pickUpSFX;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +30,7 @@ public class PowerupManager : MonoBehaviour
 
     public void Add(Powerup powerupToAdd)
     {
+        pickUpSFX.Play();
         // Apply the powerup
         powerupToAdd.Apply(this);
         // Save it to the list

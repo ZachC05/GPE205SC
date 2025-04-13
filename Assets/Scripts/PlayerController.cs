@@ -26,9 +26,6 @@ public class PlayerController : Controller
     [Header("Keys for Shooting || Can left click to shoot")]
     public KeyCode shootKey;
 
-    [Header("Lives")]
-    public int lives = 3;
-
     
 
 
@@ -45,23 +42,9 @@ public class PlayerController : Controller
             {
                 //Add to manager
                 GameControl.instance.players.Add(this);
+                GameControl.instance.gameActive = true;
             }
         }
-        permCanvas = Instantiate(PlayerOwnedCanvas, gameObject.transform);
-        getCamera getCam = permCanvas.GetComponent<getCamera>();
-        Camera cam = GetComponent<Camera>();
-        if(cam != null)
-        {
-            getCam.getandset(cam);
-        }
-        else
-        {
-            Debug.Log("Failed to get cam");
-        }
-
-
-        pointsText = getCam.points;
-        livesText = getCam.lives;
 
         //makes sure the UI exists
         if (pointsText != null && livesText != null)
@@ -73,6 +56,9 @@ public class PlayerController : Controller
             Debug.Log("Please enter a UI for the player");
         }
         base.Start();
+
+        
+
     }
 
     // Update is called once per frame
@@ -82,6 +68,10 @@ public class PlayerController : Controller
         if (!LockControls)
         {
             GetInputs();
+        }
+        if(pawn == null)
+        {
+            GameControl.instance.players.Remove(this);
         }
         base.Update();
     }
@@ -153,6 +143,11 @@ public class PlayerController : Controller
             {
                 //remove from list
                 GameControl.instance.players.Remove(this);
+                if(pawn != null)
+                {
+                    Destroy(pawn);
+                }
+
             }
         }
     }
@@ -171,13 +166,22 @@ public class PlayerController : Controller
 
     public override void UpdatePersonalUI()
     {
-        pointsText.text = "Points: " + points;
-        livesText.text = "Lives: " + lives;
+        if(livesText != null && pointsText != null)
+        {
+            pointsText.text = "Points: " + points;
+            livesText.text = "Lives: " + lives;
+        }
+
     }
 
     public override void RemvoeLives()
     {
         lives--;
         UpdatePersonalUI();
+    }
+
+    public override void ResapawnPlayer()
+    {
+        
     }
 }

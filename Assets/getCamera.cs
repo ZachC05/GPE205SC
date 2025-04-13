@@ -6,12 +6,15 @@ using UnityEngine;
 public class getCamera : MonoBehaviour
 {
     Canvas canvas;
-    public TMP_Text points;
-    public TMP_Text lives;
+    public TMP_Text pointsPlayer1;
+    public TMP_Text livesPlayer1;
+    public TMP_Text pointsPlayer2;
+    public TMP_Text livesPlayer2;
     // Start is called before the first frame update
     void Start()
     {
         canvas = GetComponent<Canvas>();
+        
     }
 
     public void getandset(Camera cam)

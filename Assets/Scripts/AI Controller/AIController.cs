@@ -522,4 +522,9 @@ public class AIController : Controller
     {
         //doesnt have lives
     }
+
+    public override void ResapawnPlayer()
+    {
+        //doesnt need to respawn;
+    }
 }
