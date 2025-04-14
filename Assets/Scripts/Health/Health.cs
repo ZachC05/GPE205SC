@@ -59,15 +59,16 @@ public class Health : MonoBehaviour
         deathSFX.Play();
         Debug.Log(source.name + " Killed " + gameObject.name);
 
-        
-        if(playerController != null)
+        source.owner.AddPoints(pawnWorth);
+        if (playerController != null)
         {
+            
             if (playerController.lives > 0)
             {
-                source.owner.AddPoints(pawnWorth);
 
+                
+                owner.owner.RemvoeLives();
                 GetHealth(20, source);
-                playerController.lives--;
                 transform.position = GameControl.instance.spawnPos.transform.position;
 
 

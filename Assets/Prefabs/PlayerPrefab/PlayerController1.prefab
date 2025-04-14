@@ -52,6 +52,7 @@ MonoBehaviour:
   LockControls: 0
   pawn: {fileID: 0}
   points: 0
+  lives: 3
   PlayerOwnedCanvas: {fileID: 2656679273017260403, guid: c6e75d3a522e4c6439843e56be243c93, type: 3}
   pointsText: {fileID: 0}
   livesText: {fileID: 0}
@@ -59,8 +60,8 @@ MonoBehaviour:
   moveBackwardKey: 115
   rotateRightKey: 100
   rotateLeftKey: 97
-  shootKey: 0
-  lives: 3
+  shootKey: 323
+  player2: 0
 --- !u!20 &3542404615441608784
 Camera:
   m_ObjectHideFlags: 0

@@ -113,7 +113,7 @@ public class AIController : Controller
         {
             control.playerSeenByScout = false;
         }
-        if(pawn != null)
+        if(pawn != null && target != null)
         {
             GetInputs();
         }
@@ -350,7 +350,6 @@ public class AIController : Controller
             //IF AI is close enoug to the waypoint, then go to next one
             if(Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) <= waypointStopDistance)
             {
-                Debug.Log("I am at waypoint " + currentWaypoint);
                 currentWaypoint++;
             }       
         }

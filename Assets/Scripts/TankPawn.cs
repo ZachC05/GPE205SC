@@ -6,7 +6,9 @@ public class TankPawn : Pawn
 {
 
     public float nextShootTime;
-    
+
+    public bool isAI;
+
     public Rigidbody rb;
 
 
@@ -23,6 +25,10 @@ public class TankPawn : Pawn
     public override void Update()
     {
         base.Update();
+        if(owner == null && isAI == false)
+        {
+            Destroy(gameObject);
+        }
     }
     public override void MoveForward()
     {
@@ -78,6 +84,8 @@ public class TankPawn : Pawn
         }
 
     }
+
+
     //Rotates the object, mainly for AI to the position of the target
     public override void RotateTowards(Vector3 TargetPos)
     {

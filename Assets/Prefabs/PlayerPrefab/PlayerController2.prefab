@@ -60,7 +60,8 @@ MonoBehaviour:
   moveBackwardKey: 274
   rotateRightKey: 275
   rotateLeftKey: 276
-  shootKey: 0
+  shootKey: 256
+  player2: 1
 --- !u!20 &3542404615441608784
 Camera:
   m_ObjectHideFlags: 0

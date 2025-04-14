@@ -703,7 +703,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ab2b653d94db8f5428d796a494138a90, type: 3}
       propertyPath: m_Name
-      value: Tank
+      value: player1Tank
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ab2b653d94db8f5428d796a494138a90, type: 3}
       propertyPath: m_Layer
@@ -834,6 +834,7 @@ MonoBehaviour:
   secPerShot: 0
   fireRate: 5
   nextShootTime: 0
+  isAI: 0
   rb: {fileID: 0}
 --- !u!114 &6283981432051321197
 MonoBehaviour:

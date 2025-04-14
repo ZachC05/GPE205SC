@@ -2839,7 +2839,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -342.19357, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3376,7 +3376,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -259.73718, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5831,6 +5831,7 @@ MonoBehaviour:
   spawnPos: {fileID: 0}
   twoPlayerMode: 1
   playerPrefab2: {fileID: 1675188684739502410, guid: 70a941a983d4f1547bbe15242dd06662, type: 3}
+  player2TankFab: {fileID: 8076416522422016616, guid: c9ff252bfb322c94286ee984270c0559, type: 3}
   players: []
   AI: []
   CamSpawnPos: {x: 0, y: 60, z: 0}
@@ -5838,7 +5839,7 @@ MonoBehaviour:
   playerSeenByScout: 0
   gameActive: 0
   aiAmount: 0
-  ui: {fileID: 0}
+  ui: {fileID: 1753501457}
 --- !u!4 &1310896498
 Transform:
   m_ObjectHideFlags: 0

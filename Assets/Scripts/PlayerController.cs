@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -26,8 +27,8 @@ public class PlayerController : Controller
     [Header("Keys for Shooting || Can left click to shoot")]
     public KeyCode shootKey;
 
-    
 
+    public bool player2;
 
 
     // Start is called before the first frame update
@@ -45,6 +46,8 @@ public class PlayerController : Controller
                 GameControl.instance.gameActive = true;
             }
         }
+
+
 
         //makes sure the UI exists
         if (pointsText != null && livesText != null)
@@ -69,60 +72,65 @@ public class PlayerController : Controller
         {
             GetInputs();
         }
-        if(pawn == null)
+        if (pawn == null)
         {
             GameControl.instance.players.Remove(this);
+            Destroy(gameObject);
         }
         base.Update();
     }
 
     public override void GetInputs()
     {
-        //gets inputs from player and communicates it to the pawn scripts and makes noise
-        if (Input.GetKey(moveForwardKey))
+        if(pawn != null)
         {
-            pawn.MoveForward();
-            pawn.noiseMaker.noiseDistance = 5;
-        }
-        if (Input.GetKey(moveBackwardKey))
-        {
-            pawn.MoveBackward();
-            pawn.noiseMaker.noiseDistance = 5;
-        }
-        if (Input.GetKey(rotateRightKey))
-        {
-            pawn.RotateRight();
-            pawn.noiseMaker.noiseDistance = 5;
-        }
-        if (Input.GetKey(rotateLeftKey))
-        {
-            pawn.RotateLeft();
-            pawn.noiseMaker.noiseDistance = 5;
-        }
-        //Gets rid of the noise right when the players stops
-        if (Input.GetKeyUp(moveForwardKey))
-        {
-            pawn.noiseMaker.noiseDistance = 0;
-        }
-        if (Input.GetKeyUp(moveBackwardKey))
-        {
-            pawn.noiseMaker.noiseDistance = 0;
-        }
-        if (Input.GetKeyUp(rotateRightKey))
-        {
-            pawn.noiseMaker.noiseDistance = 0;
-        }
-        if (Input.GetKeyUp(rotateLeftKey))
-        {
-            pawn.noiseMaker.noiseDistance = 0;
+            //gets inputs from player and communicates it to the pawn scripts and makes noise
+            if (Input.GetKey(moveForwardKey))
+            {
+                pawn.MoveForward();
+                pawn.noiseMaker.noiseDistance = 5;
+            }
+            if (Input.GetKey(moveBackwardKey))
+            {
+                pawn.MoveBackward();
+                pawn.noiseMaker.noiseDistance = 5;
+            }
+            if (Input.GetKey(rotateRightKey))
+            {
+                pawn.RotateRight();
+                pawn.noiseMaker.noiseDistance = 5;
+            }
+            if (Input.GetKey(rotateLeftKey))
+            {
+                pawn.RotateLeft();
+                pawn.noiseMaker.noiseDistance = 5;
+            }
+            //Gets rid of the noise right when the players stops
+            if (Input.GetKeyUp(moveForwardKey))
+            {
+                pawn.noiseMaker.noiseDistance = 0;
+            }
+            if (Input.GetKeyUp(moveBackwardKey))
+            {
+                pawn.noiseMaker.noiseDistance = 0;
+            }
+            if (Input.GetKeyUp(rotateRightKey))
+            {
+                pawn.noiseMaker.noiseDistance = 0;
+            }
+            if (Input.GetKeyUp(rotateLeftKey))
+            {
+                pawn.noiseMaker.noiseDistance = 0;
+            }
+
+            //when the player shoots start the noise made function
+            if (Input.GetKey(shootKey))
+            {
+                pawn.Shoot();
+                StartCoroutine(noiseMade());
+            }
         }
 
-        //when the player shoots start the noise made function
-        if (Input.GetKey(shootKey) || Input.GetMouseButton(0))
-        {
-            pawn.Shoot();
-            StartCoroutine(noiseMade());
-        }
     }
 
     //a function that makes the noise delay for a few before going away
@@ -154,6 +162,7 @@ public class PlayerController : Controller
 
     public override void AddPoints(int pointsAmount)
     {
+        Debug.Log(gameObject.name + " got " + pointsAmount);
         points += pointsAmount;
         UpdatePersonalUI();
     }
@@ -179,6 +188,16 @@ public class PlayerController : Controller
         lives--;
         UpdatePersonalUI();
     }
+
+    public void TPPlayer2()
+    {
+        if (player2)
+        {
+            pawn.transform.position = GameControl.instance.players[0].pawn.transform.position;
+        }
+    }
+
+    
 
     public override void ResapawnPlayer()
     {

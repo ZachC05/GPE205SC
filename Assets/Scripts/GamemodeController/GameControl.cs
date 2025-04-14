@@ -44,6 +44,7 @@ public class GameControl : MonoBehaviour
     [Header("2 player mode")]
     public bool twoPlayerMode;
     public GameObject playerPrefab2;
+    public GameObject player2TankFab;
 
     //start poit of the tank
     public List<PlayerController> players;
@@ -108,6 +109,11 @@ public class GameControl : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyUp(titleScreenKey))
+        {
+            TitleScreenTransfer();
+        }
+
     }
 
     public void Start()
@@ -146,6 +152,9 @@ public class GameControl : MonoBehaviour
         //assigner the owner player controller
         tankpawn.owner = playerController;
 
+        playerCon.GetComponent<PlayerController>().pointsText = ui.pointsPlayer1;
+        playerCon.GetComponent<PlayerController>().livesText = ui.livesPlayer1;
+
 
     }
 
@@ -155,7 +164,7 @@ public class GameControl : MonoBehaviour
 
         //Spawns the yank and controller prefab
         GameObject playerCon = Instantiate(playerPrefab2, CamSpawnPos, Quaternion.LookRotation(CamSpawnRot));
-        GameObject player = Instantiate(tankPawnPrefab, spawnPos.transform.position, Quaternion.identity);
+        GameObject player = Instantiate(player2TankFab, spawnPos.transform.position, Quaternion.identity);
 
         //Gets the controller script from the summoned player copntroller
         Controller playerController = playerCon.GetComponent<Controller>();
@@ -169,7 +178,8 @@ public class GameControl : MonoBehaviour
         //assigner the owner player controller
         tankpawn.owner = playerController;
 
-
+        playerCon.GetComponent<PlayerController>().pointsText = ui.pointsPlayer2;
+        playerCon.GetComponent<PlayerController>().livesText = ui.livesPlayer2;
 
     }
 
@@ -200,7 +210,8 @@ public class GameControl : MonoBehaviour
         {
             foreach(PlayerController player in players)
             {
-                Destroy(player);
+                Destroy(player.pawn.gameObject);
+                Destroy(player.gameObject);
             }
         }
 

@@ -16,6 +16,8 @@ public class moveCamera : MonoBehaviour
         //sets the cam position to a fixed position
         goToY.x = gameObject.transform.position.x;
         goToY.z = gameObject.transform.position.z;
+
+
     }
 
     // Update is called once per frame
@@ -30,6 +32,7 @@ public class moveCamera : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         //whenever the player enters a room, it will try to get the tankpawn and the camera, then it will start the moving proccess
         Debug.Log("Player Entered Room" + gameObject.name);
         pawn = other.GetComponent<TankPawn>();
@@ -37,6 +40,7 @@ public class moveCamera : MonoBehaviour
         {
             if(pawn.owner != null)
             {
+                
                 cam = pawn.owner.GetComponent<Camera>();
                 if (cam != null)
                 {
@@ -50,14 +54,32 @@ public class moveCamera : MonoBehaviour
 
         }
     }
-    
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "player2")
+        {
+            foreach (PlayerController controller in GameControl.instance.players)
+            {
+                controller.TPPlayer2();
+            }
+
+        }
+    }
+
+
     IEnumerator LockCamandMove(TankPawn pawn, Camera cam)
     {
+        foreach (PlayerController controller in GameControl.instance.players)
+        {
+            controller.TPPlayer2();
+        }
         //sets stuff to true and false for a few seconds and then the player can resume gameplay
         pawn.owner.LockControls = true;
         goingToNextArea = true;
         yield return new WaitForSeconds(2);
         goingToNextArea = false;
         pawn.owner.LockControls = false;
+
     }
 }
