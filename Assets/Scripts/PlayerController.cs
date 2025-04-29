@@ -12,6 +12,7 @@ public class PlayerController : Controller
     public GameObject PlayerOwnedCanvas;
     public TMP_Text pointsText;
     public TMP_Text livesText;
+    public TMP_Text healthText;
     GameObject permCanvas;
 
 
@@ -179,6 +180,7 @@ public class PlayerController : Controller
         {
             pointsText.text = "Points: " + points;
             livesText.text = "Lives: " + lives;
+            healthText.text = pawn.GetComponent<Health>().currentHealth.ToString() + "/" + pawn.GetComponent<Health>().maxHealth.ToString();
         }
 
     }

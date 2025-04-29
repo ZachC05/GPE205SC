@@ -10,6 +10,8 @@ public class getCamera : MonoBehaviour
     public TMP_Text livesPlayer1;
     public TMP_Text pointsPlayer2;
     public TMP_Text livesPlayer2;
+    public TMP_Text healthPlayer1;
+    public TMP_Text healthPlayer2;
     // Start is called before the first frame update
     void Start()
     {

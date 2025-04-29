@@ -46,6 +46,6 @@ public class optionsUIScript : MonoBehaviour
     {
         float newvolume = SFXVolumeSlider.value;
 
-        audioMixer.SetFloat("SFX", newvolume);
+        audioMixer.SetFloat("soundFX", newvolume);
     }
 }

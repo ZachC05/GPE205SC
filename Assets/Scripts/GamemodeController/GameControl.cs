@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 using TMPro;
 
 public class GameControl : MonoBehaviour
@@ -18,6 +18,7 @@ public class GameControl : MonoBehaviour
     public GameObject optionsSccreen;
     public GameObject gameplayScreen;
     public GameObject gameOverScreen;
+    public GameObject gameWinScreen;
 
     [Header("Camera")]
     public GameObject tempCamera;
@@ -42,9 +43,11 @@ public class GameControl : MonoBehaviour
 
 
     [Header("2 player mode")]
+    public Toggle TwoPlayerModeToggle;
     public bool twoPlayerMode;
     public GameObject playerPrefab2;
     public GameObject player2TankFab;
+    public GameObject player2UIItems;
 
     //start poit of the tank
     public List<PlayerController> players;
@@ -94,6 +97,11 @@ public class GameControl : MonoBehaviour
         if (players.Count == 0 && gameActive == true)
         {
             GameOverScreenTransfer();
+        }
+
+        if(AI.Count == 0 && gameActive == true)
+        {
+            GameWinScreenTransfer();
         }
 
         //adjusts all of the ai to see the player
@@ -154,6 +162,7 @@ public class GameControl : MonoBehaviour
 
         playerCon.GetComponent<PlayerController>().pointsText = ui.pointsPlayer1;
         playerCon.GetComponent<PlayerController>().livesText = ui.livesPlayer1;
+        playerCon.GetComponent<PlayerController>().healthText = ui.healthPlayer1;
 
 
     }
@@ -180,6 +189,7 @@ public class GameControl : MonoBehaviour
 
         playerCon.GetComponent<PlayerController>().pointsText = ui.pointsPlayer2;
         playerCon.GetComponent<PlayerController>().livesText = ui.livesPlayer2;
+        playerCon.GetComponent<PlayerController>().healthText = ui.healthPlayer2;
 
     }
 
@@ -195,6 +205,7 @@ public class GameControl : MonoBehaviour
         creditsScreen.SetActive(false);
         gameplayScreen.SetActive(false);
         gameOverScreen.SetActive(false);
+        gameWinScreen.SetActive(false);
         
         if (AI.Capacity > 0)
         {
@@ -248,6 +259,13 @@ public class GameControl : MonoBehaviour
         creditsScreen.SetActive(true);
         tempCamera.SetActive(true);
     }
+    public void GameWinScreenTransfer()
+    {
+        menuUIAudio.Play();
+        DeactivateAllStates();
+        gameWinScreen.SetActive(true);
+        tempCamera.SetActive(true);
+    }
     public void GameplayScreenTransfer()
     {
         menuUIAudio.Play();
@@ -268,6 +286,11 @@ public class GameControl : MonoBehaviour
         if (twoPlayerMode)
         {
             SpawnPlayer2();
+            player2UIItems.SetActive(true);
+        }
+        else
+        {
+            player2UIItems.SetActive(false);
         }
 
         //Gets the AI
@@ -288,6 +311,19 @@ public class GameControl : MonoBehaviour
         menuUIAudio.Play();
         Application.Quit();
         Debug.Log("Player Quit");
+    }
+
+    public void Activate2PlayerMode()
+    {
+        menuUIAudio.Play();
+        if(TwoPlayerModeToggle.isOn == true)
+        {
+            twoPlayerMode = true;
+        }
+        else
+        {
+            twoPlayerMode = false;
+        }
     }
     private void OnApplicationQuit()
     {

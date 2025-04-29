@@ -44,6 +44,12 @@ public class Health : MonoBehaviour
         {
             Die(source);
         }
+
+        if(owner.owner != null)
+        {
+            owner.owner.UpdatePersonalUI();
+        }
+
     }
     public void GetHealth(float amout, Pawn source)
     {
@@ -53,13 +59,19 @@ public class Health : MonoBehaviour
 
         //Can't go above maxHealth
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        owner.owner.UpdatePersonalUI();
     }
     public void Die(Pawn source)
     {
         deathSFX.Play();
         Debug.Log(source.name + " Killed " + gameObject.name);
 
-        source.owner.AddPoints(pawnWorth);
+        if(source.owner != null)
+        {
+            source.owner.AddPoints(pawnWorth);
+        }
+
         if (playerController != null)
         {
             

@@ -44,7 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d2884990d433104d8ac94098bcb23ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LockControls: 0
   pawn: {fileID: 0}
+  points: 0
+  lives: 3
+  HealthUI: {fileID: 0}
+  spawnAddition: {x: 0, y: 0, z: 0}
   control: {fileID: 0}
   exploder: 0
   scout: 0
@@ -64,7 +69,7 @@ MonoBehaviour:
   attackTriggerDistance: 0
   fleeDistance: 3
   hearingRadius: 30
-  feildOfView: 480
+  feildOfView: 90
   waypointStopDistance: 2
   waypoints:
   - {fileID: 0}
